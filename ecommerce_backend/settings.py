@@ -103,11 +103,11 @@ WSGI_APPLICATION = 'ecommerce_backend.wsgi.application'
 DATABASES = {
     "default": dj_database_url.config(
         default=os.getenv(
-            "DATABASE_URL",  # use DATABASE_URL from Render
+            "DATABASE_URL",  # Render will provide this automatically
             "postgresql://admin:admin123@localhost:5432/ecom"  # fallback for local dev
         ),
         conn_max_age=600,
-        ssl_require=not os.getenv("DEBUG", "True") == "True"
+        ssl_require=True  # important for Render deployment
     )
 }
 
