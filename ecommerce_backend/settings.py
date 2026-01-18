@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -87,15 +88,23 @@ WSGI_APPLICATION = 'ecommerce_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+#DATABASES = {
+ #     'default': {
+  #      'ENGINE': 'django.db.backends.postgresql',
+   #     'NAME': 'ecom',
+    #    'USER': 'admin',
+     #   'PASSWORD': 'admin123',
+      #  'HOST': 'localhost',
+       # 'PORT': '5432',
+#    }
+#}
+
 DATABASES = {
-      'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ecom',
-        'USER': 'admin',
-        'PASSWORD': 'admin123',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default='postgresql://admin:admin123@localhost:5432/ecom',
+        conn_max_age=600,
+        ssl_require=not os.getenv('DEBUG', 'True') == 'True'
+    )
 }
 
 
