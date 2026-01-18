@@ -101,12 +101,18 @@ WSGI_APPLICATION = 'ecommerce_backend.wsgi.application'
 
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.getenv("DATABASE_URL"),  # uses the Render-provided URL
+    'default': dj_database_url.config(
+        # The default= line ensures it works locally if you have a .env file or local PG
+        default=os.environ.get('DATABASE_URL'),
         conn_max_age=600,
-        ssl_require=True  # enforce SSL on cloud
+        conn_health_checks=True,
     )
 }
+
+# Render PostgreSQL requires SSL. This block ensures it's only active 
+# when we are actually connecting to a remote database.
+if not DEBUG:
+    DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
 
 
 # Password validation
